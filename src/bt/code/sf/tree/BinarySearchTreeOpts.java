@@ -69,7 +69,7 @@ public class BinarySearchTreeOpts {
             BinarySearchTree minNode = node.getRight() ;
             BinarySearchTree minNodeParent = node ;
 
-            while (minNode!=null){
+            while (minNode.getLeft()!=null){
                 minNodeParent =  minNode ;
                 minNode = minNode.getLeft(); //找最小节点
             }
@@ -127,6 +127,11 @@ public class BinarySearchTreeOpts {
         mid(root);
 
         find(100);
+
+        System.out.println("删除");
+        remove(200);
+
+        mid(root);
 
     }
 }
