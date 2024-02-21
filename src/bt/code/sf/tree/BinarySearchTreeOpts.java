@@ -64,7 +64,39 @@ public class BinarySearchTreeOpts {
         }
 
         //找到了
+        if(node.getLeft()!=null&&node.getRight()!=null){
+            //找到最小的节点
+            BinarySearchTree minNode = node.getRight() ;
+            BinarySearchTree minNodeParent = node ;
 
+            while (minNode!=null){
+                minNodeParent =  minNode ;
+                minNode = minNode.getLeft(); //找最小节点
+            }
+            node.setData(minNode.getData());
+            node = minNode ;
+            parent = minNodeParent ;
+
+        }
+
+        //删除节点
+        BinarySearchTree child = null ;
+        if(node.getLeft()!=null){
+            child = node.getLeft();
+        } else if (node.getRight()!=null) {
+            child = node.getRight() ;
+        }else{
+            child = null ;
+        }
+
+        //删除节点是根节点
+        if(parent==null){
+            root = child ;
+        } else if ( parent .getLeft() == node) {
+            parent.setLeft(child);
+        } else if ( parent.getRight()==node) {
+            parent.setRight(node);
+        }
     }
 
     /**
