@@ -2,6 +2,7 @@ package bt.code.sf.day.d1;
 
 import sun.nio.ch.ThreadPool;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -83,8 +84,13 @@ public class T1 {
                 }
             });
         });
-
+        service.shutdown();
         System.out.println(String.format("一天最多捕捉%d,最少%d",dayAllYufuCountMax,dayAllYufuCountMin));
+
+        BigDecimal allYu = BigDecimal.valueOf(1000);
+        BigDecimal maxDay =  allYu.divide(new BigDecimal(dayAllYufuCountMin),0,BigDecimal.ROUND_HALF_UP);
+        BigDecimal minDay =  allYu.divide(new BigDecimal(dayAllYufuCountMax),0,BigDecimal.ROUND_HALF_UP);
+        System.out.println(String.format("最多需要%s天，最少需要%s天",String.valueOf(maxDay),String.valueOf(minDay)));
 
     }
 
