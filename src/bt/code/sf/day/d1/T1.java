@@ -1,12 +1,16 @@
 package bt.code.sf.day.d1;
 
+import sun.nio.ch.ThreadPool;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.*;
 
 public class T1 {
 
-
+    public static volatile int  dayAllYufuCountMax =  0 ;
+    public static volatile int  dayAllYufuCountMin =  0 ;
     public static void main(String[] args) {
 
         //并发考虑
@@ -20,6 +24,8 @@ public class T1 {
         list.stream().forEach(t11 -> {
             System.out.println(t11.toString() );});
 
+        T1 t = new T1() ;
+        t.m1(list);
 
     }
 
@@ -62,7 +68,23 @@ public class T1 {
     }
 
     //简单 实现1
-    public void m1() {
+    public void m1(List<T1_1> yufus) {
+
+        ExecutorService service = Executors.newFixedThreadPool(10);
+
+        //一天最多抓多少条鱼
+
+        yufus.stream().forEach( t11 -> {
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    dayAllYufuCountMax = dayAllYufuCountMax + t11.getMaxGet() ;
+                    dayAllYufuCountMin = dayAllYufuCountMin + t11.getMinGet() ;
+                }
+            });
+        });
+
+        System.out.println(String.format("一天最多捕捉%d,最少%d",dayAllYufuCountMax,dayAllYufuCountMin));
 
     }
 
