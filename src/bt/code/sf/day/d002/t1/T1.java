@@ -1,5 +1,7 @@
 package bt.code.sf.day.d002.t1;
 
+import java.util.concurrent.Callable;
+
 /**
  * 并发的多重实现
  */
@@ -12,11 +14,14 @@ public class T1 {
     public static void main(String[] args) {
 
          DemoT1 demoT1 = new DemoT1();
-        demoT1.setCount(0);
+         demoT1.setCount(0);
         for (int i = 0; i <10 ; i++) {
-            demoT1.setName(String.valueOf(i));
-             T1_1 t1 = new T1_1(demoT1);
-            t1.start();
+           demoT1.setName(String.valueOf(i));
+ /*          T1_1 t1 = new T1_1(demoT1);
+             t1.start();*/
+
+/*           Thread t2 = new Thread(new T1_2(demoT1));
+            t2.start();*/
         }
         try {
             Thread.sleep(3000);
@@ -65,8 +70,8 @@ class  T1_1 extends Thread {
 
     public void excute2(DemoT1 demoT1){
         //System.out.println(String.format("before_go_%s,%d",name ,count));
-       int count = demoT1.getCount() + 1 ;
-       demoT1.setCount(count);
+        int count = demoT1.getCount() + 1 ;
+        demoT1.setCount(count);
         System.out.println(String.format("after_go_%s,%d",demoT1.getName() ,demoT1.getCount()));
 
     }
@@ -74,10 +79,54 @@ class  T1_1 extends Thread {
 }
 
 //是实现 runnable
+
+class  T1_2 implements  Runnable {
+
+    private DemoT1 demoT1 ;
+
+    public T1_2(DemoT1 demoT1){
+        this.demoT1 = demoT1 ;
+    }
+
+    public void T1_2(DemoT1 demoT1) {
+        int count = demoT1.getCount() + 1 ;
+        demoT1.setCount(count);
+        System.out.println(String.format("after_go_%s,%d",demoT1.getName() ,demoT1.getCount()));
+    }
+
+
+
+    @Override
+    public void run() {
+        T1_2(demoT1);
+    }
+}
 //实现callaable
 
+class T1_3 implements Callable<DemoT1> {
+
+    public DemoT1 demoT1 ;
+    public  T1_3(){
+
+    }
+
+    public  T1_3(DemoT1 demoT1){
+       this.demoT1 = demoT1 ;
+    }
+
+    @Override
+    public DemoT1 call() throws Exception {
+        int count = demoT1.getCount() + 1 ;
+        demoT1.setCount(count);
+        System.out.println(String.format("after_go_%s,%d",demoT1.getName() ,demoT1.getCount()));
+        return demoT1;
+    }
+}
 
 
+
+
+//这几种实现中的公共模块
 class DemoT1{
     public String getName() {
         return name;
