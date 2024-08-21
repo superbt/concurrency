@@ -79,7 +79,7 @@ class  T1_1 extends Thread {
 }
 
 //是实现 runnable
-
+// 这个方法感觉很好实现，有了第一个的经验，第二个独立编写起来，相对的省力气多了。
 class  T1_2 implements  Runnable {
 
     private DemoT1 demoT1 ;
