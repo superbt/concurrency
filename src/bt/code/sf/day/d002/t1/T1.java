@@ -1,6 +1,6 @@
 package bt.code.sf.day.d002.t1;
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.*;
 
 /**
  * 并发的多重实现
@@ -15,6 +15,8 @@ public class T1 {
 
          DemoT1 demoT1 = new DemoT1();
          demoT1.setCount(0);
+
+        ExecutorService executor = Executors.newFixedThreadPool(10);
         for (int i = 0; i <10 ; i++) {
            demoT1.setName(String.valueOf(i));
  /*          T1_1 t1 = new T1_1(demoT1);
@@ -22,7 +24,18 @@ public class T1 {
 
 /*           Thread t2 = new Thread(new T1_2(demoT1));
             t2.start();*/
+
+            Callable<DemoT1>  callable = new T1_3(demoT1);
+            Future<DemoT1> future = executor.submit(callable);
+            try {
+                System.out.println(String.format("获取到的结果%s,%d",future.get().getName(),future.get().getCount()));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         }
+        executor.shutdown();
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
