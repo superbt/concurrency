@@ -26,9 +26,21 @@ public class T1 {
             t2.start();*/
 
             Callable<DemoT1>  callable = new T1_3(demoT1);
-            Future<DemoT1> future = executor.submit(callable);
+/*            Future<DemoT1> future = executor.submit(callable);
             try {
                 System.out.println(String.format("获取到的结果%s,%d",future.get().getName(),future.get().getCount()));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }*/
+
+            FutureTask<DemoT1> task = new FutureTask<>(callable);
+            Thread thread = new Thread(task);
+            thread.start();
+            try {
+                DemoT1 result = task.get();
+                System.out.println(result);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ExecutionException e) {
@@ -159,4 +171,12 @@ class DemoT1{
 
     String  name ;
     Integer count ;
+
+    @Override
+    public String toString() {
+        return "DemoT1{" +
+                "name='" + name + '\'' +
+                ", count=" + count +
+                '}';
+    }
 }
